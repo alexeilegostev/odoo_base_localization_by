@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="specification_pick">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.basic_layout">
+                    <style>
+                        .cell_right {
+                        border: 1px solid black;
+                        font-size: 15px;
+                        font-family:courier;
+                        padding: 3px;
+                        text-align: right;
+                        }
+                        .cell_right_small {
+                        border: 1px solid black;
+                        font-size: 10px;
+                        font-family:courier;
+                        padding: 3px;
+                        text-align: right;
+                        }
+                        .cell_center {
+                        border: 1px solid black;
+                        font-size: 15px;
+                        font-family:courier;
+                        padding: 3px;
+                        text-align: center;
+                        }
+                        .cell_center_small {
+                        border: 1px solid black;
+                        font-size: 10px;
+                        font-family:courier;
+                        padding: 3px;
+                        text-align: center;
+                        }
+                        .cell_left {
+                        border: 1px solid black;
+                        font-size: 15px;
+                        font-family:courier;
+                        padding: 3px;
+                        text-align: left;
+                        }
+                        .cell_left_small {
+                        border: 1px solid black;
+                        font-size: 10px;
+                        font-family:courier;
+                        padding: 3px;
+                        text-align: left;
+                        }
+                    </style>
+                    <div class="page">
+                        <table width="100%">
+                            <tbody>
+                                <tr>
+                                    <td width="60%"></td>
+                                    <td width="40%">
+                                        <b>Спецификация к договору</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td/>
+                                    <td>
+                                        <span><span t-esc="doc.contract_id.name"/> от <span t-esc="doc.contract_date"/></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td/>
+                                    <td style="border-top: 1px solid black;"/>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <br/>
+                        <p style="text-align:center;"><b> Спецификация № </b><b></b><span t-esc="doc.name"/><b/></p>
+                        <b>Дата: <span t-esc="helper.ru_date_short(doc.scheduled_date)"/></b>
+                        <br/>
+                        <br/>
+                        <p><span style="font-size: 15px; font-family:courier; text-align: left;">В соответствии с <t t-if="doc.basis_document"><u><t t-esc="doc.basis_document" /></u></t> <t t-else=""> ___________________ </t>
+                            Поставщик осуществляет поставку Покупателю следующей партии товара: <br/><br/></span></p>
+                        <t t-set="display_discount" t-value="any([l.discount for l in doc.move_ids_without_package])"/>
+                        <table class="cell_left" width="100%">
+                            <thead>
+                                <tr>
+                                    <t t-set="colspan" t-value="9"/>
+                                    <th class="cell_center" width="5%"><b>№ п/п</b></th>
+                                    <th class="cell_center" width="20%"><b>Наименование</b></th>
+                                    <th class="cell_center" width="10%"><b>Количество</b></th>
+                                    <th class="cell_center" width="7%"><b>Ед. изм.</b></th>
+                                    <th class="cell_center" width="13%"><b>Цена за ед., <span t-if="doc.currency_id" t-field="doc.currency_id.symbol"/></b></th>
+                                    <th t-if="display_discount" width="5%" class="cell_center">
+                                        <span>Скидка,%</span>
+                                        <t t-set="colspan" t-value="colspan+1"/></th>
+                                    <th class="cell_center" width="11%"><b>Стоимость, <span t-if="doc.currency_id" t-field="doc.currency_id.symbol"/></b></th>
+                                    <th class="cell_center" width="10%"><b>Ставка НДС, %</b></th>
+                                    <th class="cell_center" width="11%"><b>Сумма НДС, <span t-if="doc.currency_id" t-field="doc.currency_id.symbol"/></b></th>
+                                    <th class="cell_center" width="13%"><b>Сумма с НДС, <span t-if="doc.currency_id" t-field="doc.currency_id.symbol"/></b></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="release_value" t-value="0"/>
+                                <t t-set="counter" t-value="1"/>
+                                <t t-foreach="doc.move_ids_without_package" t-as="mi">
+<!--                                     хз, как считать, если несколько налогов включено и не включено  в стоимость, пока берем первый в списке налогов и смотрим по нему-->
+<!--                                    <t t-if="len(mi.mapped('tax_id'))>0">-->
+<!--                                        <t t-if="mi.mapped('tax_id')[0].price_include">-->
+<!--                                            <t t-set="release_value" t-value="release_value + mi.price_total"/>-->
+<!--                                        </t>-->
+<!--                                        <t t-else="">-->
+<!--                                            <t t-set="release_value" t-value="release_value + mi.price_subtotal"/>-->
+<!--                                        </t>-->
+<!--                                    </t>-->
+<!--                                    <t t-if="len(mi.mapped('tax_id'))==0">-->
+<!--                                        <t t-set="release_value" t-value="release_value + mi.price_subtotal"/>-->
+<!--                                    </t>-->
+                                    <t t-set="release_value" t-value="release_value + mi.price_subtotal"
+                                       groups="account.group_show_line_subtotals_tax_excluded"/>
+                                    <t t-set="release_value" t-value="release_value + mi.price_total"
+                                       groups="account.group_show_line_subtotals_tax_included"/>
+                                    <tr>
+                                        <td class="cell_center" t-esc="counter"/>
+                                        <td class="cell_left" t-esc="mi.name"/>
+                                        <td class="cell_right" t-esc="mi.quantity_done"/>
+                                        <td class="cell_center" t-esc="mi.product_uom.name"/>
+                                        <td class="cell_right" t-esc="mi.price_unit"/>
+                                        <td t-if="display_discount" class="cell_center">
+                                                <span t-field="mi.discount"/>
+                                        </td>
+                                        <td class="cell_right">
+<!--                                            <t t-if="mi.mapped('tax_id')">-->
+<!--                                                <t t-if="mi.mapped('tax_id')[0].price_include">-->
+<!--                                                    <t t-esc="mi.price_total"/>-->
+<!--                                                </t>-->
+<!--                                                <t t-else="">-->
+<!--                                                    <t t-esc="mi.price_subtotal"/>-->
+<!--                                                </t>-->
+<!--                                            </t>-->
+<!--                                            <t t-if="len(mi.mapped('tax_id'))==0">-->
+<!--                                                <t t-esc="mi.price_subtotal"/>-->
+<!--                                            </t>-->
+                                            <span t-esc="mi.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                            <span t-esc="mi.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                        </td>
+                                        <td class="cell_right"
+                                            t-esc="','.join(str(i) for i in (mi.mapped('tax_id').mapped('amount')))"/>
+                                        <td class="cell_right" t-esc="'%.2f'% mi.price_tax"/>
+                                        <td class="cell_right" t-esc="'%.2f'% mi.price_total"/>
+                                        <t t-set="counter" t-value="counter + 1"/>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td colspan="5">Итого:</td>
+                                    <td t-if="display_discount" class="cell_center">x</td>
+                                    <td class="cell_right" t-esc="release_value"></td>
+                                    <td class="cell_center">x</td>
+                                    <td class="cell_right" t-esc="'%.2f'% sum(doc.mapped('move_ids_without_package').mapped('price_tax'))"></td>
+                                    <td class="cell_right" t-esc="doc.amount_total"></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <br/>
+                        <span style="font-size: 15px; font-family:courier; text-align: left;">
+                            <b>Наименование покупателя:</b>
+                            <br/>
+                            <u>
+                                <span>
+                                    <t t-esc="doc.partner_id.name"/>
+                                </span>
+                                Адрес: <span t-esc="doc.partner_id.zip"/>
+                                <span t-esc="doc.partner_id.country_id.name"/>
+                                <span t-esc="doc.partner_id.state_id.name"/>
+                                <span t-esc="doc.partner_id.city"/>
+                                <span t-esc="doc.partner_id.street"/>
+                                <span t-esc="doc.partner_id.street2"/>
+                                <t t-if="doc.partner_id.phone">
+                                    <br/>тел. <t t-esc="doc.partner_id.phone"></t>,
+                                </t>
+                                <t t-if="doc.partner_id.email">
+                                    e-mail:
+                                    <t t-esc="doc.partner_id.email"></t>
+                                </t>
+                                <br/>
+                                <t t-if="doc.partner_id.country_id.id == %(base.ru)d">
+                                    <t t-if="doc.partner_id.vat">
+                                        ИНН <span t-esc="doc.partner_id.vat"/>
+                                    </t>
+                                    <t t-if="doc.partner_id.kpp">
+                                        КПП <span t-esc="doc.partner_id.kpp"/>
+                                    </t>
+                                    <t t-if="doc.partner_id.okpo">
+                                        ОКПО <span t-esc="doc.partner_id.okpo"/>
+                                    </t>
+                                    <t t-if="doc.partner_id.ogrn">
+                                        ОГРН <span t-esc="doc.partner_id.ogrn"/>
+                                    </t>
+                                    <t t-if="doc.partner_id.ogrnip">
+                                        ОГРНИП <span t-esc="doc.partner_id.ogrnip"/>
+                                    </t>
+                                    <t t-if="doc.partner_id.okato">
+                                        ОКАТО <span t-esc="doc.partner_id.okato"/>
+                                    </t>
+                                </t>
+                                <t t-elif="doc.partner_id.country_id.id == %(base.by)d">
+                                    <t t-if="doc.partner_id.vat">
+                                        УНП <span t-esc="doc.partner_id.vat"/>
+                                    </t>
+                                    <t t-if="doc.partner_id.okpo">
+                                        ОКПО <span t-esc="doc.partner_id.okpo"/>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <t t-if="doc.partner_id.vat">
+                                        Tax ID <span t-esc="doc.partner_id.vat"/>
+                                    </t>
+
+                                </t>
+                            </u>
+                            <br/>
+                            <br/>
+                            <b>Адрес поставки товара:</b>
+                            <br/>
+                            <span>
+                                <t t-esc="doc.partner_id.name"/>
+                            </span>
+                            <span t-esc="doc.partner_id.zip"/>
+                            <span t-esc="doc.partner_id.country_id.name"/>
+                            <span t-esc="doc.partner_id.state_id.name"/>
+                            <span t-esc="doc.partner_id.city"/>
+                            <span t-esc="doc.partner_id.street"/>
+                            <span t-esc="doc.partner_id.street2"/>
+                            <br/>
+                            <b>
+                                <br/>
+                                <br/>
+                                <span>Общая стоимость товара составляет:
+                                    <span t-esc="doc.amount_total"/>
+                                    в т.ч. НДС
+                                    <span>
+                                        <t t-foreach="doc.amount_by_group" t-as="amount_by_group">
+                                        <tr >
+    <!--                                        <t t-if="len(doc.line_ids.filtered(lambda line: line.tax_line_id)) == 1 and doc.amount_untaxed == amount_by_group[2]">-->
+    <!--                                            <td>-->
+    <!--                                                <span t-esc="', '.join(doc.mapped('invoice_line_ids').mapped('tax_ids').mapped('name'))">: </span>-->
+    <!--                                                <span t-esc="helper.in_words_with_currency(doc.partner_id.lang, amount_by_group[1], doc.currency_id.name, doc.currency_id.currency_unit_label, doc.currency_id.currency_subunit_label, True)"/>-->
+
+    <!--                                            </td>-->
+    <!--                                        </t>-->
+    <!--                                        <t t-else="">-->
+                                                    <td>
+                                                        <span t-esc="amount_by_group[0]"/>
+                                                        <span>&amp;nbsp;<span>от</span>
+                                                            <t t-esc="amount_by_group[4]"/>:
+                                                        </span>
+                                                        <span t-esc="helper.in_words_with_currency(doc.partner_id.lang, amount_by_group[1], doc.currency_id.name, doc.currency_id.currency_unit_label, doc.currency_id.currency_subunit_label, True)"/>
+                                                    </td>
+    <!--                                            </t>-->
+                                        </tr>
+                                    </t>
+                                    </span>
+                                </span>
+                            </b>
+
+                        <br/>
+                        <br/>
+                        <b>
+                            Условия и срок оплаты:
+                            <span t-esc="doc.payment_term_id.name"/>
+                        </b><br/><br/>
+                        Настоящая спецификация является неотъемлемой частью Договора и составлена в 2(двух) экземплярах, имеющих равную юридическую силу, по одному для каждой из Сторон.<br/>
+                        <br/>
+                        </span>
+                        <table width="100%">
+                            <tbody>
+                                <tr>
+                                    <td style="text-align: center; padding-bottom: 30px; border-bottom:1px solid black; font-size: 15px; font-family:courier;" width="30%"><b>Поставщик</b></td>
+                                    <td width="30%"></td>
+                                    <td style="text-align: center; padding-bottom: 30px; border-bottom:1px solid black; font-size: 15px; font-family:courier;" width="30%"><b>Покупатель</b></td>
+                                    <td width="10%"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

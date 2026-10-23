@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="account_move_form_view_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page/field[@name='invoice_line_ids']/tree/field[@name='price_total']"
+                   position="after">
+                <field name="price_tax" optional="hide"/>
+                <field name="weight" optional="hide"/>
+                <field name="cargo_places" optional="hide"/>
+                <field name="note" optional="hide"/>
+            </xpath>
+            <xpath expr="//notebook/page/field[@name='line_ids']/tree/field[@name='account_type']" position="after">
+                <field name="price_tax" invisible="1"/>
+                <field name="weight" optional="hide"/>
+                <field name="cargo_places" optional="hide"/>
+                <field name="note" invisible="1"/>
+            </xpath>
+            <xpath expr="//page[@name='other_info']" position="after">
+                <page string="Data for reports" >
+                    <group>
+                        <group string="Transporter">
+                            <field name="related_delivery_id" invisible="1"/>
+                            <field name="customer_automotive_carriage_id"/>
+                            <field name="vehicle"/>
+                            <field name="trailer"/>
+                            <field name="driver_employee_id"/>
+                            <field name="driver_other"/>
+                            <field name="waybill"/>
+                            <field name="basis_document"/>
+                            <field name="loading_id"/>
+                            <field name="unloading_id"/>
+                            <field name="leave_allowed_by_id" placeholder="Name"/>
+                            <field name="cargo_released_by"/>
+                            <field name="cargo_accepted_for_transportation_by"/>
+                            <field name="cargo_accepted_by"/>
+                            <field name="seal"/>
+                        </group>
+                        <group string="Attorney">
+                            <field name="attorney_number"/>
+                            <field name="attorney_date"/>
+                            <field name="attorney_company"/>
+                            <hr colspan="2"/>
+                            <label for="loading_start"></label>
+                            <span>
+                                <span>
+                                    <field name="loading_start" style="width:45%;" placeholder="Start"/>
+                                </span>
+                                -
+                                <span>
+                                    <field name="loading_end" style="width:45%;" placeholder="End"/>
+                                </span>
+                            </span>
+                            <field name="loading_contractor"/>
+                            <field name="loading_method"/>
+                            <label for="unloading_start"></label>
+                            <span>
+                                <span>
+                                    <field name="unloading_start" style="width:45%;" placeholder="Start"/>
+                                </span>
+                                -
+                                <span>
+                                    <field name="unloading_end" style="width:45%;" placeholder="End"/>
+                                </span>
+                            </span>
+                            <field name="unloading_contractor"/>
+                            <field name="unloading_method"/>
+                            <field name="consignment_note"/>
+                            <field name="consignment_date"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//group[@name='accounting_info_group']" position="after">
+                <group name="cargo_info" string="Delivery">
+                    <field name="weight_total"/>
+                    <field name="cargo_places_amount"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

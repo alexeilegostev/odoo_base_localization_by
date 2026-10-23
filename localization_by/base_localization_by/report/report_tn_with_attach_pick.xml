@@ -1,0 +1,507 @@
+<odoo>
+    <data>
+        <template id="report_tn_with_attach_vert_pick">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="base_localization_by.report_tn_with_attachment_pick" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_tn_with_attach_horiz_pick">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="base_localization_by.report_tn_with_attachment_pick" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+
+        <template id="report_tn_with_attachment_pick">
+            <t t-call="web.basic_layout">
+                <div class="page">
+
+                    <style>
+                        .bol_table {border: 1px solid black; width: 100%;}
+                        .bol_table th {border: 1px solid black; font-wight:bold; text-align: center;}
+                        .bol_table td {border: 1px solid black; text-align:right; height: 28px; vertical-align:top;}
+                        .vat_table {border: 0px; width: 40%; margin-left: auto; margin-right: auto;}
+                        .vat_table td {padding: 5px;}
+                        .upper_note {border-top: 1px solid black; font-size:xx-small; text-align: center;}
+
+                    </style>
+                    <br/>
+                    <br/>
+
+
+                    <table class="vat_table" cellspacing="0" cellpadding="5">
+                        <tbody>
+                            <tr>
+                                <td style="border: 0px; width: 30px;"/>
+                                <td style="width: 180px; text-align: center; border: 1px solid black;">
+                                    Грузоотправитель
+                                </td>
+                                <td style="width: 180px; text-align: center; border: 1px solid black;">Грузополучатель
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 0px; text-align: center;">УНП</td>
+                                <td style="text-align: center; border: 1px solid black;">
+                                    <span t-if="o.company_id.partner_id.vat" t-esc="o.company_id.partner_id.vat"
+                                          t-attf-class="span_style_x"/>
+                                </td>
+
+                                <td style="text-align: center; border: 1px solid black;">
+                                    <span t-if="o.partner_id.vat" t-esc="o.partner_id.vat" t-attf-class="span_style_x"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+
+                    <table style="border: 0px; width: 100%">
+                        <tr>
+                            <td style="height: 18px; text-align: left;">
+                                <t t-esc="helper.ru_date_short(o.scheduled_date)"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <table style="border: 0px; width: 100%">
+                        <tr>
+                            <td style="height: 18px;white-space: pre; padding-right: 5px;">Грузоотправитель</td>
+                            <td style="width: 100%;">
+                                <t t-esc="o.company_id.name"/>
+                                <span t-esc="o.company_id.zip"/>
+                                <span t-esc="o.company_id.country_id.name"/>
+                                <span t-esc="o.company_id.state_id.name"/>
+                                <span t-esc="o.company_id.city"/>
+                                <span t-esc="o.company_id.street"/>
+                                <span t-esc="o.company_id.street2"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 18px;"/>
+                            <td class="upper_note">(наименование, адрес)</td>
+                        </tr>
+                    </table>
+
+                    <table style="border: 0px; width: 100%">
+                        <tr>
+                            <td style="height: 18px;white-space: pre; padding-right: 5px;">Грузополучатель</td>
+                            <td style="width: 100%;">
+                                <t t-if="o.sale_order_id.partner_invoice_id">
+                                    <t t-esc="o.sale_order_id.partner_invoice_id.name"/>
+                                    <span t-esc="o.sale_order_id.partner_invoice_id.zip"/>
+                                    <span t-esc="o.sale_order_id.partner_invoice_id.country_id.name"/>
+                                    <span t-esc="o.sale_order_id.partner_invoice_id.state_id.name"/>
+                                    <span t-esc="o.sale_order_id.partner_invoice_id.city"/>
+                                    <span t-esc="o.sale_order_id.partner_invoice_id.street"/>
+                                    <span t-esc="o.sale_order_id.partner_invoice_id.street2"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-esc="o.partner_id.name"/>
+                                    <span t-esc="o.partner_id.zip"/>
+                                    <span t-esc="o.partner_id.country_id.name"/>
+                                    <span t-esc="o.partner_id.state_id.name"/>
+                                    <span t-esc="o.partner_id.city"/>
+                                    <span t-esc="o.partner_id.street"/>
+                                    <span t-esc="o.partner_id.street2"/>
+
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 18px;"/>
+                            <td class="upper_note">(наименование, адрес)</td>
+                        </tr>
+                    </table>
+
+                    <table style="border: 0px; width: 100%">
+                        <tr>
+                            <td style="height: 18px;white-space: pre; padding-right: 5px;">Основание отпуска</td>
+                            <td style="width:100%;">
+                                <t t-if="o.basis_document">
+                                    <t t-if="o.contract_id"><span t-attf-class="span_style_xx">, </span><span t-esc="o.basis_document" t-attf-class="span_style_xx"/></t>
+                                    <t t-else="">
+                                        <span t-esc="o.basis_document" t-attf-class="span_style_xx"/>
+                                    </t>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 18px;"/>
+                            <td class="upper_note">(наименование, дата и номер документа)</td>
+                        </tr>
+                    </table>
+
+                    <br/>
+                    <table class="bol_table">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 30%; max-width: 40%;" colspan="9">I ТОВАРНЫЙ РАЗДЕЛ</th>
+                            </tr>
+                            <tr>
+                                <th style="min-width: 200px; max-width: 40%;">Наименование товара</th>
+                                <th>Ед.изм.</th>
+                                <th>Количество</th>
+                                <th>Цена,
+                                    <span t-field="o.currency_id.symbol"/>
+                                </th>
+                                <th>Стоимость,
+                                    <span t-field="o.currency_id.symbol"/>
+                                </th>
+                                <th>Ставка НДС, %</th>
+                                <th>Сумма НДС,
+                                    <span t-field="o.currency_id.symbol"/>
+                                </th>
+                                <th>Стоимость с НДС,
+                                    <span t-field="o.currency_id.symbol"/>
+                                </th>
+                                <th>Примечание</th>
+                            </tr>
+                            <tr>
+                                <th>1</th>
+                                <th>2</th>
+                                <th>3</th>
+                                <th>4</th>
+                                <th>5</th>
+                                <th>6</th>
+                                <th>7</th>
+                                <th>8</th>
+                                <th>9</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="release_value" t-value="0"/>
+                            <t t-foreach="o.move_ids_without_package" t-as="l">
+                                <t t-set="release_value" t-value="release_value + l.price_subtotal"
+                                   groups="account.group_show_line_subtotals_tax_excluded"/>
+                                <t t-set="release_value" t-value="release_value + l.price_total"
+                                   groups="account.group_show_line_subtotals_tax_included"/>
+                            </t>
+                            <tr>
+                                <td style="min-width: 200px; max-width: 40%; text-align: left;" colspan="9">Товар согласно приложению №  на листе.</td>
+                            </tr>
+
+                            <tr>
+                                <td style="text-align: left;">ИТОГО</td>
+                                <td style="text-align: center;">х</td>
+                                <td style="text-align: right;">
+                                    <span t-esc="sum(o.move_ids_without_package.mapped('quantity'))"/>
+                                </td>
+                                <td style="text-align: center;">х</td>
+                                <td style="text-align: right;">
+                                    <strong>
+                                        <span t-esc="release_value"/>
+                                    </strong>
+                                </td>
+                                <td style="text-align: center;">х</td>
+                                <td style="text-align: right;">
+                                    <strong>
+                                        <span t-esc="o.amount_tax"/>
+                                    </strong>
+                                </td>
+                                <td style="text-align: right;">
+                                    <strong>
+                                        <span t-esc="o.amount_total"/>
+                                    </strong>
+                                </td>
+
+                                <td style="text-align: center;">x</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                    <table style="border: 0px; width: 100%">
+                        <tr>
+                            <td style="height: 18px;white-space: pre; padding-right: 5px;">Всего сумма НДС</td>
+                            <td style="width: 100%;">
+                                <span class="span_style_x_partner">
+                                    <span t-if="o.amount_tax"
+                                          t-esc="helper.in_words_with_currency(o.partner_id.lang, o.amount_tax, o.currency_id.name, o.currency_id.currency_unit_label, o.currency_id.currency_subunit_label, True)"/>
+
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 18px;"/>
+                            <td class="upper_note">прописью</td>
+                        </tr>
+                    </table>
+                    <table style="border: 0px; width: 100%">
+                        <tr>
+                            <td style="height: 18px;white-space: pre; padding-right: 5px;">Всего стоимость с НДС</td>
+                            <td style="width: 100%;">
+                                <span class="span_style_x_partner">
+                                    <span t-if="o.amount_total"
+                                          t-esc="helper.in_words_with_currency(o.partner_id.lang, o.amount_total, o.currency_id.name, o.currency_id.currency_unit_label, o.currency_id.currency_subunit_label, True)"/>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 18px;"/>
+                            <td class="upper_note">прописью</td>
+                        </tr>
+                    </table>
+                    <table style="border: 0px; width: 100%">
+                        <tr>
+                            <td style="height: 18px;white-space: pre; padding-right: 5px;">Отпуск разрешил</td>
+                            <td style="width: 100%;" colspan="2">
+                                <span t-field="o.leave_allowed_by_id"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 18px;"/>
+                            <td class="upper_note" colspan="2">(должность, фамилия, инициалы, подпись)</td>
+                        </tr>
+                    </table>
+                    <table style="border: 0px; width: 100%">
+                        <tr>
+                            <td style="height: 18px;white-space: pre; padding-right: 5px;">Сдал грузоотправитель</td>
+                            <td style="width: 100%;" colspan="2">
+                                <span t-field="o.cargo_released_by_id"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 18px;"/>
+                            <td class="upper_note">(должность, фамилия, инициалы, подпись, штамп(печать)
+                                грузоотправителя)
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="border: 0px; width: 100%">
+                        <tr>
+                            <td style="height: 18px;white-space: pre; padding-right: 5px;">Товар к доставке принял</td>
+                            <td style="width: 100%;">
+                                <span t-if="o.cargo_accepted_for_transportation_by_id"
+                                      t-esc="o.cargo_accepted_for_transportation_by_id.name"
+                                      t-attf-class="span_style_x"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 18px;"/>
+                            <td class="upper_note">(должность, фамилия, инициалы, подпись)</td>
+                        </tr>
+                    </table>
+                    <table style="border: 0px; width: 100%">
+                        <tr>
+                            <td style="height: 18px;width: 50%;">
+                                <table style="border: 0px; width: 100%">
+                                    <tr>
+                                        <td style="white-space: pre; padding-right: 5px;">по доверенности №</td>
+                                        <td style="width: 100%;">
+                                            <span t-field="o.attorney_number"/>
+                                            <t t-if="o.attorney_date">от
+                                                <span t-field="o.attorney_date"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td/>
+                                        <td class="upper_note">(номер, дата)</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="height: 18px;width: 50%;">
+                                <table style="border: 0px; width: 100%">
+                                    <tr>
+                                        <td style="white-space: pre; padding-right: 5px;">выданной</td>
+                                        <td style="width: 100%;">
+                                            <span t-if="o.attorney_company" t-esc="o.attorney_company.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td/>
+                                        <td class="upper_note">(наименование органиации)</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="border: 0px; width:100%">
+                        <tr>
+                            <td style="height: 18px;white-space: pre; padding-right: 5px;">Принял грузополучатель</td>
+                            <td style="width: 100%;">
+                                <span t-if="o.cargo_accepted_by_id">
+                                    <span t-field="o.cargo_accepted_by_id.name"/>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="height: 18px;"/>
+                            <td class="upper_note">(должность, фамилия, инициалы, подпись, штамп(печать)
+                                грузополучателя)
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>
+                </div>
+
+                <p style="page-break-after:always"/>
+
+                <div class="page">
+                    <table style="float: right;" cellpadding="3">
+                        <tbody>
+                            <tr>
+                                <td style="text-align: right; padding-right: 5px;">
+                                    <span class="span_style_x">Приложение №</span>
+                                </td>
+                                <td style="text-align: left; width: 172px; border-bottom:1px solid black">
+                                    <span class="span_style_xx">1 (один)</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right; padding-right: 5px;">
+                                    <span class="span_style_x">к ТН-2</span>
+                                </td>
+                                <td style="text-align: left; width: 172px; border-bottom:1px solid black">
+                                    <span t-if="o.consignment_note" t-attf-class="span_style_xx">
+                                        <t t-esc="o.consignment_note"/>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right; padding-right: 5px;">
+                                    <span class="span_style_x">от</span>
+                                </td>
+                                <td style="text-align: left; width: 172px; border-bottom:1px solid black">
+                                    <span class="span_style_xx">
+                                        <t t-esc="helper.ru_date_short(o.scheduled_date)"/>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <table class="bol_table">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 200px; max-width: 40%;">Наименование товара</th>
+                                <th>Ед.изм.</th>
+                                <th>Количество</th>
+                                <th>Цена,
+                                    <span t-field="o.currency_id.symbol"/>
+                                </th>
+                                <th>Стоимость,
+                                    <span t-field="o.currency_id.symbol"/>
+                                </th>
+                                <th>Ставка НДС, %</th>
+                                <th>Сумма НДС,
+                                    <span t-field="o.currency_id.symbol"/>
+                                </th>
+                                <th>Стоимость с НДС,
+                                    <span t-field="o.currency_id.symbol"/>
+                                </th>
+                                <th>Примечание</th>
+                            </tr>
+                            <tr>
+                                <th>1</th>
+                                <th>2</th>
+                                <th>3</th>
+                                <th>4</th>
+                                <th>5</th>
+                                <th>6</th>
+                                <th>7</th>
+                                <th>8</th>
+                                <th>9</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="release_value" t-value="0"/>
+                            <tr t-foreach="o.move_ids_without_package" t-as="l">
+                                <t t-set="release_value" t-value="release_value + l.price_subtotal"
+                                   groups="account.group_show_line_subtotals_tax_excluded"/>
+                                <t t-set="release_value" t-value="release_value + l.price_total"
+                                   groups="account.group_show_line_subtotals_tax_included"/>
+                                <td style="min-width: 200px; max-width: 40%; text-align: left;">
+                                    <span t-esc="l.name"/>
+                                </td>
+                                <td style="text-align: center;">
+                                    <span t-esc="l.product_uom.name"/>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span t-esc="l.quantity"/>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span t-esc="'%.2f'%  (l.price_unit * (100 - l.discount)/100)"/>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span t-esc="l.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                    <span t-esc="l.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                </td>
+                                <td style="text-align: center;">
+                                    <span t-if="len(l.tax_id)>0"
+                                          t-esc="', '.join([str(x) for x in l.tax_id.mapped('amount')])"/>
+                                    <span t-if="len(l.tax_id)==0">Без НДС</span>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span t-esc="l.price_tax"/>
+                                </td>
+                                <td style="text-align: right;">
+                                    <span t-esc="l.price_total"/>
+                                </td>
+
+                                <td style="text-align: left;">
+                                    <span t-field="l.note"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">ИТОГО</td>
+                                <td style="text-align: center;">х</td>
+                                <td style="text-align: right;">
+                                    <span t-esc="sum(o.move_ids_without_package.mapped('quantity'))"/>
+                                </td>
+                                <td style="text-align: center;">х</td>
+                                <td style="text-align: right;">
+                                    <strong>
+                                        <span t-esc="'%.2f'% release_value"/>
+                                    </strong>
+                                </td>
+                                <td style="text-align: center;">х</td>
+                                <td style="text-align: right;">
+                                    <strong>
+                                        <span t-esc="o.amount_tax"/>
+                                    </strong>
+                                </td>
+                                <td style="text-align: right;">
+                                    <strong>
+                                        <span t-esc="o.amount_total"/>
+                                    </strong>
+                                </td>
+
+                                <td style="text-align: center;">x</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                    <table style="float: right;" cellpadding="3">
+                        <tbody>
+                            <tr>
+                                <td style="text-align: right; padding-right: 5px;">
+                                    <span class="span_style_x">Лист</span>
+                                </td>
+                                <td style="text-align: center; width: 32px; border-bottom:1px solid black">
+                                    <span class="span_style_x">1</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

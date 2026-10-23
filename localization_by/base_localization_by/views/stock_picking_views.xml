@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_picking_inherit_form" model="ir.ui.view">
+        <field name="name">stock.picking.inherit.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='product_uom']" position="after">
+                <field name="price_unit" optional="show"/>
+                <field name="order_line_id" column_invisible="1"/>
+                <field name="discount" optional="hide"/>
+                <field name="tax_id" optional="show" widget="many2many_tags"/>
+                <field name="price_tax" optional="hide"/>
+                <field name="price_subtotal" optional="hide"/>
+                <field name="price_total" optional="show"/>
+                <field name="weight" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="order_id" column_invisible="1"/>
+                <field name="pricelist_id" column_invisible="1"/>
+                <field name="fiscal_position_id" column_invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='picked']" position="before">
+                 <field name="cargo_places" optional="hide"/>
+                <field name="note" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after">
+                <field invisible="1" name="currency_id"/>
+                <field name="pricelist_id"/>
+                <field invisible="1" name="sale_order_id"/>
+                <field name="fiscal_position_id"/>
+                <field name="payment_term_id"/>
+            </xpath>
+            <xpath expr="//field[@name='move_ids_without_package']" position="after">
+                <group col="6" name="note_group">
+                    <group colspan="2">
+                    </group>
+                    <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                        <field name="amount_untaxed" options="{'currency_field': 'currency_id'}" widget="monetary"/>
+                        <field name="amount_tax" options="{'currency_field': 'currency_id'}" widget="monetary"/>
+                        <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                            <label for="amount_total"/>
+                        </div>
+                        <field class="oe_subtotal_footer_separator" name="amount_total" nolabel="1" options="{'currency_field': 'currency_id'}" widget="monetary"/>
+                    </group>
+                    <group class="oe_subtotal_footer oe_right" colspan="2" name="delivery_info">
+                        <field name="weight_total"/>
+                        <field name="amount_cargo_places"/>
+                    </group>
+                    <div class="oe_clear"/>
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='note']" position="after">
+                <page string="Data for reports">
+                    <group>
+                        <group string="Transporter">
+                            <field name="customer_automotive_carriage_id"/>
+                            <field name="vehicle_id"/>
+                            <field name="trailer_id"/>
+                            <field name="license_plate"/>
+                            <field name="trailer_license_plate"/>
+                            <field invisible="driver_other_id != False" name="driver_employee_id"/>
+                            <field invisible="driver_employee_id != False" name="driver_other_id"/>
+                            <field name="waybill"/>
+                            <field name="basis_document"/>
+                            <field name="loading_id"/>
+                            <field name="unloading_id"/>
+                            <field name="leave_allowed_by_id" placeholder="Name" style="width:50%;"/>
+                            <field name="cargo_released_by_id"/>
+                            <field name="cargo_accepted_by_id"/>
+                            <field name="seal"/>
+                            <field name="cargo_accepted_for_transportation_by_id"/>
+                            <field name="packaging"/>
+                            <label for="gross_weight_actual"/>
+                            <div class="o_row">
+                                <field name="gross_weight_actual"/>
+                                <span>
+                                    kg
+                                </span>
+                            </div>
+                            <label for="cargo_volume"/>
+                            <div class="o_row">
+                                <field name="cargo_volume"/>
+                                <span>
+                                    cub.m
+                                </span>
+                            </div>
+                            <field name="cargo_declared_value"/>
+                        </group>
+                        <group string="Attorney">
+                            <field name="attorney_number"/>
+                            <field name="attorney_date"/>
+                            <field name="attorney_company"/>
+                            <hr colspan="2"/>
+                            <label for="loading_start"/>
+                            <span>
+                                <span>
+                                    <field name="loading_start" placeholder="Start" style="width:50%;"/>
+                                </span>
+                                -
+                                <span>
+                                    <field name="loading_end" placeholder="End" style="width:50%;"/>
+                                </span>
+                            </span>
+                            <field name="loading_contractor"/>
+                            <field name="loading_method"/>
+                            <label for="unloading_start"/>
+                            <span>
+                                <span>
+                                    <field name="unloading_start" placeholder="Start" style="width:50%;"/>
+                                </span>
+                                -
+                                <span>
+                                    <field name="unloading_end" placeholder="End" style="width:50%;"/>
+                                </span>
+                            </span>
+                            <field name="unloading_contractor"/>
+                            <field name="unloading_method"/>
+                            <field name="consignment_note"/>
+                            <field name="consignment_date"/>
+                            <field name="transfer_with_the_goods"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//group[@name='other_infos']/field[@name='company_id']" position="after">
+                <field name="invoice_partner_bank_id"/>
+            </xpath></field>
+    </record>
+</odoo>

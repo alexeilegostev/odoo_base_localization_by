@@ -1,0 +1,3 @@
+"id","name","detailed_type","categ_id","service_policy","standard_price","uom_id","uom_po_id","property_account_income_id","property_account_expense_id"
+"product_advance_prepayments_by","Авансы полученные","service","product.product_category_all","ordered_prepaid","1","uom.product_uom_unit","uom.product_uom_unit","by_account_6202","by_account_6202"
+"product_asset_prepayments_by","Авансы выплаченные","service","product.product_category_all","ordered_prepaid","1","uom.product_uom_unit","uom.product_uom_unit","by_account_6002","by_account_6002"

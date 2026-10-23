@@ -1,0 +1,5 @@
+"id","name","country_id","tax_payable_account_id","tax_receivable_account_id","name@ru"
+"tax_group_20","VAT 20%","base.by","by_account_681","by_account_18","НДС 20%"
+"tax_group_0","VAT 0%","base.by","by_account_681","by_account_18","НДС 0%"
+"tax_group_10","VAT 10%","base.by","by_account_681","by_account_18","НДС 10%"
+"tax_group_25","VAT 25%","base.by","by_account_681","by_account_18","НДС 25%"

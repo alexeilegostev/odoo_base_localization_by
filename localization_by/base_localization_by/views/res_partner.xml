@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="base_loc_by_res_partner_form" model="ir.ui.view">
+        <field name="name">l10n_by.res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[1]" position="before">
+                <page autofocus="autofocus" invisible="(country_id != %(base.ru)d and country_id != %(base.by)d) or (company_type == 'person' and (country_id == %(base.ru)d or country_id == %(base.by)d))" name="general_info" string="General information">
+                    <group>
+                        <group>
+                            <field name="okpo"/>
+                            <field name="registry_info"/>
+                        </group>
+                        <group>
+                            <field invisible="country_id != %(base.ru)d" name="kpp"/>
+                            <field invisible="country_id != %(base.ru)d or ogrnip != False" name="ogrn"/>
+                            <field invisible="country_id != %(base.ru)d or ogrn != False" name="ogrnip"/>
+                            <field invisible="country_id != %(base.ru)d" name="okato"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <page name="internal_notes" position="before">
+                <page invisible="is_company == True" name="empl_data_by" string="Employee data for by localization">
+                    <group name="driver" string="Driver">
+                        <field invisible="is_company == True" name="is_driver"/>
+                        <field invisible="is_company == True" name="is_leave_allowed"/>
+                        <label for="driver_license_series" string="Driver license"/>
+                        <div class="o_row" invisible="is_driver == False">
+                            <span>
+                                Serial
+                            </span>
+                            <field name="driver_license_series"/>
+                            <span>
+                                №
+                            </span>
+                            <field name="driver_license_number"/>
+                        </div>
+                    </group>
+                </page>
+            </page>
+            <xpath expr="//page[@name='sales_purchases']//field[@name='user_id']" position="after">
+                <field invisible="company_type != 'person'" name="acts_on_the_basis" string="Acts On The Basis"/>
+            </xpath></field>
+    </record>
+</odoo>

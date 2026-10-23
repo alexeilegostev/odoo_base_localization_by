@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="res_transport_form_view_inherit" model="ir.ui.view">
+            <field name="name">res.transport.form.inherit</field>
+            <field name="model">res.transport</field>
+            <field name="inherit_id" ref="ru_transport.res_transport_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='confirming_document']" position="after">
+                    <field name="driver_employee_id"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

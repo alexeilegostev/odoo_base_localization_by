@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="acceptance_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="account_move" t-value="account_move_data[doc.id]"/>
+                <t t-call="web.basic_layout">
+                    <style>
+                        div {
+                        font-family: italic;
+                        }
+                        .cell_right {
+                        border: 1px solid black;
+                        font-size: 15px;
+                        font-family:italic;
+                        padding: 3px;
+                        text-align: right;
+                        }
+                        .cell_center {
+                        border: 1px solid black;
+                        font-size: 15px;
+                        font-family:italic;
+                        padding: 3px;
+                        text-align: center;
+                        }
+                        .cell_left {
+                        border: 1px solid black;
+                        font-size: 15px;
+                        font-family:italic;
+                        padding: 3px;
+                        text-align: left;
+                        }
+                        .bottom_note {
+                        border-bottom: 1px solid black;
+                        }
+                        .bared_cell_right {
+                        font-size: 15px;
+                        font-family:italic;
+                        padding: 3px;
+                        text-align: right;
+                        }
+                    </style>
+                    <div class="page">
+                        <p style="text-align: center;">
+                            <span>
+                                <b>Акт о приёмке выполненных работ №
+                                    <span>
+                                        <span t-if="doc.name == '/'">б/н</span>
+                                        <span t-else="" t-esc="doc.name"/>
+                                    </span>
+                                </b>
+                            </span>
+                            <br/>
+                            <span>от
+                                <span>
+                                    <t t-esc="helper.ru_date_short(doc.invoice_date)"/>
+                                </span>
+                            </span>
+                        </p>
+                        <table style="width:100%;" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td style="padding-right: 5px;">
+                                        <span>Исполнитель</span>
+                                    </td>
+                                    <td class="bottom_note" style="width: 100%; ">
+                                        <span t-if="doc.company_id" t-esc="doc.company_id.name"/>,
+                                        <t t-if="doc.company_id">
+                                            <t t-if="doc.company_id.country_id.id ==  %(base.ru)d">
+                                                <t t-if="doc.company_id.vat">ИНН <span t-esc="doc.company_id.vat"/>,
+                                                </t>
+                                                <t t-if="doc.company_id.kpp">КПП <span t-esc="doc.company_id.kpp"/>,
+                                                </t>
+                                            </t>
+                                            <t t-elif="doc.company_id.country_id.id == %(base.by)d">
+                                                УНП <span t-esc="doc.company_id.vat"/>,
+                                            </t>
+                                            <t t-else="">
+                                                Tax ID <span t-esc="doc.company_id.vat"/>,
+                                            </t>
+                                            Адрес:
+                                            <t t-if="doc.company_id.country_id.name"><span
+                                                    t-esc="doc.company_id.country_id.name"/>,
+                                            </t>
+                                            <t t-if="doc.company_id.state_id.name"><span
+                                                    t-esc="doc.company_id.state_id.name"/>,
+                                            </t>
+                                            <t t-if="doc.company_id.city"><span t-esc="doc.company_id.city"/>,
+                                            </t>
+                                            <t t-if="doc.company_id.street">
+                                                <span t-esc="doc.company_id.street"/>
+                                            </t>
+                                            <t t-if="doc.company_id.street2">
+                                                <span t-esc="doc.company_id.street2"/>
+                                            </t>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>Заказчик</span>
+                                    </td>
+                                    <td class="bottom_note" style="width: 100%;">
+                                        <span t-if="doc.partner_id" t-esc="doc.partner_id.name"/>,
+                                        <t t-if="doc.partner_id">
+                                            <t t-if="doc.partner_id.country_id.id ==  %(base.ru)d">
+                                                ИНН <span t-esc="doc.partner_id.vat"/>,
+                                                КПП <span t-esc="doc.partner_id.kpp"/>,
+                                            </t>
+                                            <t t-elif="doc.partner_id.country_id.id == %(base.by)d">
+                                                УНП <span t-esc="doc.partner_id.vat"/>,
+                                            </t>
+                                            <t t-else="">
+                                                Tax ID <span t-esc="doc.partner_id.vat"/>,
+                                            </t>
+                                            Адрес:
+                                            <t t-if="doc.partner_id.country_id.name"><span
+                                                    t-esc="doc.partner_id.country_id.name"/>,
+                                            </t>
+                                            <t t-if="doc.partner_id.state_id.name"><span
+                                                    t-esc="doc.partner_id.state_id.name"/>,
+                                            </t>
+                                            <t t-if="doc.partner_id.city"><span t-esc="doc.partner_id.city"/>,
+                                            </t>
+                                            <t t-if="doc.partner_id.street">
+                                                <span t-esc="doc.partner_id.street"/>
+                                            </t>
+                                            <t t-if="doc.partner_id.street2">
+                                                <span t-esc="doc.partner_id.street2"/>
+                                            </t>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <t t-set="display_discount"
+                           t-value="any([l.discount for l in account_move['invoice_lines']])"/>
+                        <table>
+                            <thead>
+                                <tr class="cell_center">
+                                    <t t-set="colspan" t-value="6"/>
+                                    <td class="cell_center" width="5%">№</td>
+                                    <td class="cell_center" width="40%">Наименование работы(услуги)</td>
+                                    <td class="cell_center" width="8%">Ед. изм</td>
+                                    <td class="cell_center" width="10%">Кол-во</td>
+                                    <td class="cell_center" width="15%">Цена,
+                                        <span t-if="doc.currency_id" t-field="doc.currency_id.symbol"/>
+                                    </td>
+                                    <td t-if="display_discount" width="5%">
+                                        <span>Скидка,%</span>
+                                        <t t-set="colspan" t-value="colspan+1"/>
+                                    </td>
+                                    <td class="cell_center" width="17%">Сумма,
+                                        <span t-if="doc.currency_id" t-field="doc.currency_id.symbol"/>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="lines"
+                                   t-value="account_move['invoice_lines'].sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+                                <t t-set="release_value" t-value="0"/>
+                                <t t-set="counter" t-value="1"/>
+
+                                <tr t-foreach="lines" t-as="ol">
+
+                                    <t t-if="ol.display_type == 'line_note'">
+                                        <td colspan="99" class="cell_left">
+                                            <span t-field="ol.name" t-options="{'widget': 'text'}"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="ol.display_type == 'line_section'">
+                                        <td colspan="99" class="cell_left" style="font-weight: bold;">
+                                            <span t-field="ol.name" t-options="{'widget': 'text'}"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="ol.display_type == 'product'">
+                                        <td class="cell_center">
+                                            <t t-esc="counter"/>
+                                        </td>
+                                        <td class="cell_left">
+                                            <t t-esc="ol.name"/>
+                                        </td>
+                                        <td class="cell_center">
+                                            <t t-esc="ol.product_uom_id.name"/>
+                                        </td>
+                                        <td class="cell_center">
+                                            <t t-esc="ol.quantity"/>
+                                        </td>
+                                        <td class="cell_center">
+                                            <t t-esc="'%.2f'% ol.price_unit"/>
+                                        </td>
+                                        <td t-if="display_discount" class="cell_center">
+                                            <span t-esc="ol.discount"/>
+                                        </td>
+                                        <td class="cell_center">
+                                            <span class="text-nowrap" t-esc="ol.price_subtotal"
+                                                  groups="account.group_show_line_subtotals_tax_excluded"/>
+                                            <span class="text-nowrap" t-esc="ol.price_total"
+                                                  groups="account.group_show_line_subtotals_tax_included"/>
+                                        </td>
+                                        <t t-set="counter" t-value="counter + 1"/>
+                                    </t>
+                                </tr>
+
+                                <tr>
+                                    <td class="bared_cell_right" colspan="5">
+                                        <b>ИТОГО:</b>
+                                    </td>
+                                    <td class="bared_cell_right">
+                                        <b>
+                                            <span class="text-nowrap"
+                                                  t-esc="'%.2f'%  sum(account_move['invoice_lines'].mapped('price_subtotal'))"
+                                                  groups="account.group_show_line_subtotals_tax_excluded"/>
+                                            <span class="text-nowrap"
+                                                  t-esc="'%.2f'%  sum(account_move['invoice_lines'].mapped('price_total'))"
+                                                  groups="account.group_show_line_subtotals_tax_included"/>
+                                        </b>
+                                    </td>
+                                </tr>
+                                <t t-foreach="doc.amount_by_group" t-as="amount_by_group">
+                                    <tr>
+                                        <t t-if="len(doc.line_ids.filtered(lambda line: line.tax_line_id)) == 1 and doc.amount_untaxed == amount_by_group[2]">
+                                            <td class="bared_cell_right" colspan="5">
+                                                <b>Налоги:
+                                                    <span t-esc="', '.join(account_move['invoice_lines'].mapped('tax_ids').mapped('name'))"/>
+                                                </b>
+                                            </td>
+                                            <td class="bared_cell_right">
+                                                <b>
+                                                    <span t-esc="'%.2f'% account_move['price_tax']"/>
+                                                </b>
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="bared_cell_right" colspan="5">
+                                                <span t-esc="amount_by_group[0]"/>
+                                                <span>&amp;nbsp;
+                                                    <span>от</span>
+                                                    <t t-esc="amount_by_group[4]"/>
+                                                </span>
+                                            </td>
+                                            <td class="bared_cell_right">
+                                                <span t-esc="'%.2f'% amount_by_group[1]"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td class="bared_cell_right" colspan="5">
+                                        <b>Всего(с учётом НДС):</b>
+                                    </td>
+
+                                    <td class="bared_cell_right">
+                                        <b>
+                                            <t t-esc="'%.2f'% account_move['amount_total']"/>
+                                        </b>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <br/>
+                        <table style="width:100%;" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <i>Всего оказано услуг на сумму:</i>
+                                    </td>
+                                    <td class="bottom_note" colspan="2">
+                                        <t t-esc="helper.in_words_with_currency(doc.partner_id.lang, account_move['amount_total'], doc.currency_id.name, doc.currency_id.currency_unit_label, doc.currency_id.currency_subunit_label, True)"/>
+                                    </td>
+                                </tr>
+                                <t t-foreach="doc.amount_by_group" t-as="amount_by_group">
+                                    <tr>
+                                        <t t-if="len(doc.line_ids.filtered(lambda line: line.tax_line_id)) == 1 and doc.amount_untaxed == amount_by_group[2]">
+                                            <td>
+                                                <span>
+                                                    <span>
+                                                        <i>в т.ч. НДС:</i>
+                                                        <span t-esc="', '.join(account_move['invoice_lines'].mapped('tax_ids').mapped('name'))"/>
+                                                    </span>
+                                                </span>
+                                            </td>
+                                            <td class="bottom_note">
+                                                <span t-esc="helper.in_words_with_currency(doc.partner_id.lang, account_move['price_tax'], doc.currency_id.name, doc.currency_id.currency_unit_label, doc.currency_id.currency_subunit_label, True)"/>
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td>
+                                                <i>в т.ч. НДС:</i>
+                                                <span t-esc="amount_by_group[0]"/>
+                                                <span>&amp;nbsp;
+                                                    <span>от</span>
+                                                    <t t-esc="amount_by_group[4]"/>
+                                                </span>
+                                            </td>
+                                            <td class="bottom_note">
+                                                <span t-esc="helper.in_words_with_currency(doc.partner_id.lang, account_move['price_tax'], doc.currency_id.name, doc.currency_id.currency_unit_label, doc.currency_id.currency_subunit_label, True)"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <i>Вышеперечисленные работы (услуги) выполнены полностью и в срок. Заказчик претензий по
+                            объёму, качеству и срокам оказания услуг не имеет.
+                        </i>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <table style="width:100%;">
+                            <tbody>
+                                <tr>
+                                    <td style="width:45%;">
+                                        <table style="width:100%;">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Исполнитель</td>
+                                                    <td style="width: 100%;" class="bottom_note"/>
+                                                </tr>
+                                                <tr>
+                                                    <td/>
+                                                    <td style="text-align: center;">М.П.</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td style="width:6%;"/>
+                                    <td style="width:45%;">
+                                        <table style="width:100%;">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Заказчик</td>
+                                                    <td style="width: 100%;" class="bottom_note"/>
+                                                </tr>
+                                                <tr>
+                                                    <td/>
+                                                    <td style="text-align: center;">М.П.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

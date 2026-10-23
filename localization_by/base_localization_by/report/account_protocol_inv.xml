@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="account_protocol_inv">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="account_move" t-value="account_move_data[doc.id]"/>
+                <t t-call="web.basic_layout">
+                    <style>
+                        .cell_right {
+                        border: 1px solid black;
+                        font-size: 15px;
+                        font-family:courier;
+                        padding: 10px;
+                        text-align: right;
+                        }
+                        .cell_right_small {
+                        border: 1px solid black;
+                        font-size: 10px;
+                        font-family:courier;
+                        padding: 3px;
+                        text-align: right;
+                        }
+                        .cell_center {
+                        border: 1px solid black;
+                        font-size: 15px;
+                        font-family:courier;
+                        padding: 10px;
+                        text-align: center;
+                        }
+                        .cell_center_small {
+                        border: 1px solid black;
+                        font-size: 10px;
+                        font-family:courier;
+                        padding: 3px;
+                        text-align: center;
+                        }
+                        .cell_left {
+                        border: 1px solid black;
+                        font-size: 15px;
+                        font-family:courier;
+                        padding: 10px;
+                        text-align: left;
+                        }
+                        .cell_left_small {
+                        border: 1px solid black;
+                        font-size: 10px;
+                        font-family:courier;
+                        padding: 3px;
+                        text-align: left;
+                        }
+                    </style>
+                    <div class="page">
+                        <table class="cell_left" width="100%">
+                            <tbody>
+                                <tr>
+                                    <td class="cell_left" width="10%">
+                                        <b>Поставщик и его адрес</b>
+                                    </td>
+                                    <td class="cell_left" width="50%">
+                                        <span>
+                                            <b>
+                                                <t t-esc="doc.company_id.name"/>
+                                            </b>
+                                        </span>
+                                        <br/>
+                                        Адрес:
+                                        <t t-if="doc.company_id.country_id.name"><span
+                                                t-esc="doc.company_id.country_id.name"/>,
+                                        </t>
+                                        <t t-if="doc.company_id.state_id.name"><span
+                                                t-esc="doc.company_id.state_id.name"/>,
+                                        </t>
+                                        <t t-if="doc.company_id.city"><span t-esc="doc.company_id.city"/>,
+                                        </t>
+                                        <t t-if="doc.company_id.street">
+                                            <span t-esc="doc.company_id.street"/>
+                                        </t>
+                                        <t t-if="doc.company_id.street2">
+                                            <span t-esc="doc.company_id.street2"/>
+                                        </t>
+                                        <t t-if="doc.company_id.phone or doc.company_id.email">
+                                            <br/>
+                                        </t>
+                                        <t t-if="doc.company_id.phone">
+                                            тел.<t t-esc="doc.company_id.phone"/>,
+                                        </t>
+                                        <t t-if="doc.company_id.email">
+                                            e-mail:
+                                            <t t-esc="doc.company_id.email"/>
+                                        </t>
+                                        <br/>
+                                        <t t-if="doc.company_id.country_id.id ==  %(base.by)d">
+                                            <t t-if="doc.company_id.vat">
+                                                УНП <span t-esc="doc.company_id.vat"/>,
+                                            </t>
+                                            <t t-if="doc.company_id.okpo">
+                                                ОКПО <span t-esc="doc.company_id.okpo"/>,
+                                            </t>
+                                        </t>
+                                        <t t-if="doc.company_id.country_id.id ==  %(base.ru)d">
+                                            <t t-if="doc.company_id.country_id.id ==  %(base.ru)d">
+                                                ИНН <span t-esc="doc.company_id.vat"/>
+                                            </t>
+                                            <t t-if="doc.company_id.kpp">
+                                                КПП <span t-esc="doc.company_id.kpp"/>,
+                                            </t>
+                                            <t t-if="doc.company_id.company_registry">
+                                                ОГРН <span t-esc="doc.company_id.company_registry"/>,
+                                            </t>
+                                            <t t-if="doc.company_id.ogrnip">
+                                                ОГРНИП <span t-esc="doc.company_id.ogrnip"/>,
+                                            </t>
+                                            <t t-if="doc.company_id.okato">
+                                                ОКАТО <span t-esc="doc.company_id.okato"/>,
+                                            </t>
+                                        </t>
+                                        <t t-if="doc.company_id.country_id.id !=  %(base.ru)d &amp; doc.company_id.country_id.id !=  %(base.by)d">
+                                            <t t-if="doc.company_id.vat">
+                                                Tax ID <span t-esc="doc.company_id.vat"/>,
+                                            </t>
+                                        </t>
+                                        <t t-if="doc.partner_bank_id">
+                                            <br/>
+                                            р/с<span t-esc="doc.partner_bank_id.acc_number"/>,
+                                            <t t-if="doc.partner_bank_id.bank_id.name">
+                                                Банк:
+                                                <span t-esc="doc.partner_bank_id.bank_id.name"/>
+                                                <br/>
+                                            </t>
+                                            <t t-if="doc.partner_bank_id.bank_id.street">
+                                                Адрес:
+                                                <span t-esc="doc.partner_bank_id.bank_id.street"/>
+                                                <br/>
+                                            </t>
+                                            <t t-if="doc.partner_bank_id.bank_id.bic">
+                                                БИК <span t-esc="doc.partner_bank_id.bank_id.bic"/>
+                                            </t>
+                                        </t>
+                                    </td>
+                                    <td class="cell_center" width="25%">
+                                        <b>СЧЕТ-ПРОТОКОЛ</b>
+                                        <br/>
+                                        согласования свободных договорных цен на товары(продукцию)
+                                        <br/>
+                                        №
+                                        <span>
+                                            <span t-if="doc.name == '/'">б/н</span>
+                                            <span t-else="" t-esc="doc.name"/>
+                                            от
+                                            <span t-esc="helper.ru_date_short(doc.invoice_date)"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell_left " width="15%">
+                                        <b>Плательщик и его адрес</b>
+                                    </td>
+                                    <td class="cell_left " colspan="2">
+                                        <span>
+                                            <b>
+                                                <t t-esc="doc.partner_id.name"/>
+                                            </b>
+                                        </span>
+                                        <br/>
+                                        Адрес:
+                                        <t t-if="doc.partner_id.country_id.name"><span
+                                                t-esc="doc.partner_id.country_id.name"/>,
+                                        </t>
+                                        <t t-if="doc.partner_id.state_id.name"><span
+                                                t-esc="doc.partner_id.state_id.name"/>,
+                                        </t>
+                                        <t t-if="doc.partner_id.city"><span t-esc="doc.partner_id.city"/>,
+                                        </t>
+                                        <t t-if="doc.partner_id.street">
+                                            <span t-esc="doc.partner_id.street"/>
+                                        </t>
+                                        <t t-if="doc.partner_id.street2">
+                                            <span t-esc="doc.partner_id.street2"/>
+                                        </t>
+                                        <t t-if="doc.partner_id.phone or doc.partner_id.email">
+                                            <br/>
+                                        </t>
+                                        <t t-if="doc.partner_id.phone">
+                                            тел.<t t-esc="doc.partner_id.phone"/>,
+                                        </t>
+                                        <t t-if="doc.partner_id.email">
+                                            e-mail:
+                                            <t t-esc="doc.partner_id.email"/>
+                                        </t>
+                                        <br/>
+                                        <t t-if="doc.partner_id.country_id.id ==  %(base.by)d">
+                                            <t t-if="doc.partner_id.vat">
+                                                УНП <span t-esc="doc.partner_id.vat"/>,
+                                            </t>
+                                            <t t-if="doc.partner_id.okpo">
+                                                ОКПО <span t-esc="doc.partner_id.okpo"/>,
+                                            </t>
+                                        </t>
+                                        <t t-if="doc.partner_id.country_id.id ==  %(base.ru)d">
+                                            <t t-if="doc.partner_id.country_id.id ==  %(base.ru)d">
+                                                ИНН <span t-esc="doc.partner_id.vat"/>
+                                            </t>
+                                            <t t-if="doc.partner_id.kpp">
+                                                КПП <span t-esc="doc.partner_id.kpp"/>,
+                                            </t>
+                                            <t t-if="doc.partner_id.ogrn">
+                                                ОГРН <span t-esc="doc.partner_id.ogrn"/>,
+                                            </t>
+                                            <t t-if="doc.partner_id.ogrnip">
+                                                ОГРНИП <span t-esc="doc.partner_id.ogrnip"/>,
+                                            </t>
+                                            <t t-if="doc.partner_id.okato">
+                                                ОКАТО <span t-esc="doc.partner_id.okato"/>,
+                                            </t>
+                                        </t>
+                                        <t t-if="doc.partner_id.country_id.id !=  %(base.ru)d &amp; doc.partner_id.country_id.id !=  %(base.by)d">
+                                            <t t-if="doc.partner_id.vat">
+                                                Tax ID <span t-esc="doc.partner_id.vat"/>,
+                                            </t>
+                                        </t>
+                                        <t t-if="doc.partner_id.bank_ids">
+                                            <br/>
+                                            р/с<span t-esc="doc.partner_id.bank_ids[0].acc_number"/>,
+                                            <t t-if="doc.partner_id.bank_ids[0].bank_id.name">
+                                                Банк:<span t-esc="doc.partner_id.bank_ids[0].bank_id.name"/>,
+                                                <br/>
+                                            </t>2
+                                            <t t-if="doc.partner_id.bank_ids[0].bank_id.street">
+                                                Адрес:
+                                                <span t-esc="doc.partner_id.bank_ids[0].bank_id.street"/>
+                                                <br/>
+                                            </t>
+                                            <t t-if="doc.partner_id.bank_ids[0].bank_id.bic">
+                                                БИК <span t-esc="doc.partner_id.bank_ids[0].bank_id.bic"/>
+                                                <br/>
+                                            </t>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" font-size="10px" font-family="courier">
+                                        <b>Основание: Договор №
+                                            <t t-if="doc.contract_id"
+                                               t-esc="doc.contract_id.name"/>
+                                            от
+                                            <t t-if="doc.contract_date"
+                                               t-esc="doc.contract_date"/>
+                                        </b>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <t t-set="display_discount" t-value="any([l.discount for l in account_move['invoice_lines']])"/>
+                        <table width="100%">
+                            <thead>
+                                <tr class="cell_center_small">
+                                    <t t-set="colspan" t-value="10"/>
+                                    <th class="cell_center_small" width="35%">Предмет счёта</th>
+                                    <th class="cell_center_small" width="5%">Ед. изм</th>
+                                    <th class="cell_center_small" width="7%">Кол-во</th>
+                                    <th class="cell_center_small" width="7%">Свободная отпускная цена
+                                        предприятия-изготовителя или импортера,
+                                        <span t-if="doc.currency_id" t-field="doc.currency_id.symbol"/>
+                                    </th>
+                                    <th class="cell_center_small" width="5%">Надбавка, %</th>
+                                    <th class="cell_center_small" width="7%">Отпускная цена,
+                                        <span t-if="doc.currency_id" t-field="doc.currency_id.symbol"/>
+                                    </th>
+                                    <th t-if="display_discount" width="5%">
+                                        <span>Скидка,%</span>
+                                        <t t-set="colspan" t-value="colspan+1"/>
+                                    </th>
+                                    <th class="cell_center_small" width="8%">Отпускная стоимость,
+                                        <span t-if="doc.currency_id" t-field="doc.currency_id.symbol"/>
+                                    </th>
+                                    <th class="cell_center_small" width="5%">Ставка НДС(%)</th>
+                                    <th class="cell_center_small" width="7%">Сумма НДС,
+                                        <span t-if="doc.currency_id" t-field="doc.currency_id.symbol"/>
+                                    </th>
+                                    <th class="cell_center_small" width="10%">Сумма с НДС,
+                                        <span t-if="doc.currency_id" t-field="doc.currency_id.symbol"/>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="lines"
+                                   t-value="account_move['invoice_lines'].sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+                                <t t-set="release_value" t-value="0"/>
+                                <!-- it is not clear how to count if several taxes are included and/or not included in the cost. For now we take the first in the list of taxes and calculate it-->
+                                <!--                                <t t-foreach="lines" t-as="ol">-->
+                                <!--                                    <t t-if="len(ol.mapped('tax_ids'))>0">-->
+                                <!--                                        <t t-if="ol.mapped('tax_ids')[0].price_include">-->
+                                <!--                                            <t t-set="release_value" t-value="release_value + ol.price_total"/>-->
+                                <!--                                        </t>-->
+                                <!--                                        <t t-else="">-->
+                                <!--                                            <t t-set="release_value" t-value="release_value + ol.price_subtotal"/>-->
+                                <!--                                        </t>-->
+                                <!--                                    </t>-->
+                                <!--                                    <t t-if="len(ol.mapped('tax_ids'))==0">-->
+                                <!--                                        <t t-set="release_value" t-value="release_value + ol.price_subtotal"/>-->
+                                <!--                                    </t>-->
+                                <!--                                </t>-->
+                                <tr t-foreach="lines" t-as="ol">
+                                    <t t-set="release_value" t-value="release_value + ol.price_subtotal"
+                                       groups="account.group_show_line_subtotals_tax_excluded"/>
+                                    <t t-set="release_value" t-value="release_value + ol.price_total"
+                                       groups="account.group_show_line_subtotals_tax_included"/>
+
+                                    <t t-if="ol.display_type == 'line_note'">
+                                        <td colspan="99" class="cell_left_small">
+                                            <span t-field="ol.name" t-options="{'widget': 'text'}"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="ol.display_type == 'line_section'">
+                                        <td colspan="99" class="cell_left_small" style="font-weight: bold;">
+                                            <span t-field="ol.name" t-options="{'widget': 'text'}"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="ol.display_type == 'product'">
+                                        <td class="cell_left_small">
+                                            <t t-esc="ol.name"/>
+                                        </td>
+                                        <td class="cell_right_small">
+                                            <t t-esc="ol.product_uom_id.name"/>
+                                        </td>
+                                        <td class="cell_right_small">
+                                            <t t-esc="ol.quantity"/>
+                                        </td>
+                                        <td class="cell_right_small"/>
+                                        <td class="cell_right_small"/>
+                                        <td class="cell_right_small">
+                                            <t t-esc="ol.price_unit"/>
+                                        </td>
+                                        <td t-if="display_discount" class="cell_center_small">
+                                            <span t-field="ol.discount"/>
+                                        </td>
+                                        <td class="cell_right_small">
+                                            <!--                                            <t t-if="ol.mapped('tax_ids')">-->
+                                            <!--                                                <t t-if="ol.mapped('tax_ids')[0].price_include">-->
+                                            <!--                                                    <t t-esc="ol.price_total"/>-->
+                                            <!--                                                   </t>-->
+                                            <!--                                                <t t-else="">-->
+                                            <!--                                                    <t t-esc="ol.price_subtotal"/></t>-->
+                                            <!--                                            </t>-->
+                                            <!--                                            <t t-if="len(ol.mapped('tax_ids'))==0">-->
+                                            <!--                                                <t t-esc="ol.price_subtotal"/></t>-->
+                                            <span t-esc="ol.price_subtotal"
+                                                  groups="account.group_show_line_subtotals_tax_excluded"/>
+                                            <span t-esc="ol.price_total"
+                                                  groups="account.group_show_line_subtotals_tax_included"/>
+                                        </td>
+                                        <td class="cell_right_small">
+                                            <t t-esc="', '.join(str(i) for i in (ol.mapped('tax_ids').mapped('amount')))"/>
+                                        </td>
+                                        <td class="cell_right_small">
+                                            <t t-esc="'%.2f'%ol.price_tax"/>
+                                        </td>
+                                        <td class="cell_right_small">
+                                            <t t-esc="ol.price_total"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <td class="cell_left_small" colspan="6">
+                                        <b>Итого:</b>
+                                    </td>
+                                    <td t-if="display_discount" class="cell_center_small">x</td>
+                                    <td class="cell_right_small">
+                                        <t t-esc="'%.2f'% release_value"/>
+                                    </td>
+                                    <td class="cell_right_small" style="text-align: center">x</td>
+                                    <td class="cell_right_small">
+                                        <t t-esc="'%.2f'% account_move['price_tax']"/>
+                                    </td>
+                                    <td class="cell_right_small">
+                                        <t t-esc="'%.2f'% account_move['amount_total']"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <table width="100%">
+                            <tbody style="font-family: courier; font-size: 15px; text-align: left; padding: 10px;">
+                                <span style="font-size: 15px; font-family:courier; text-align: left;">
+                                    <b>Всего сумма НДС:</b>
+                                </span>
+                                <t t-foreach="doc.amount_by_group" t-as="amount_by_group">
+                                    <tr>
+                                        <t t-if="len(doc.line_ids.filtered(lambda line: line.tax_line_id)) == 1 and doc.amount_untaxed == amount_by_group[2]">
+                                            <td>
+                                                <span t-esc="', '.join(account_move['invoice_lines'].mapped('tax_ids').mapped('name'))">
+                                                    :
+                                                </span>
+                                                <span t-esc="helper.in_words_with_currency(doc.partner_id.lang, account_move['price_tax'], doc.currency_id.name, doc.currency_id.currency_unit_label, doc.currency_id.currency_subunit_label, True)"/>
+
+                                            </td>
+                                        </t>
+                                        <t t-else="">
+                                            <td>
+
+                                                <span t-esc="amount_by_group[0]"/>
+                                                <span>&amp;nbsp;
+                                                    <span>от</span>
+                                                    <t t-esc="amount_by_group[4]"/>:
+                                                </span>
+                                                <span t-esc="helper.in_words_with_currency(doc.partner_id.lang, account_move['price_tax'], doc.currency_id.name, doc.currency_id.currency_unit_label, doc.currency_id.currency_subunit_label, True)"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td>
+                                        <b>Всего сумма с НДС:</b>
+                                        <span t-esc="helper.in_words_with_currency(doc.partner_id.lang, account_move['amount_total'], doc.currency_id.name, doc.currency_id.currency_unit_label, doc.currency_id.currency_subunit_label, True)"/>
+                                    </td>
+                                    <td/>
+                                </tr>
+                                <tr>
+                                    <td>Счет действителен:
+                                        <span>
+                                            <t t-if="doc.invoice_payment_term_id"
+                                               t-esc="doc.invoice_payment_term_id.name"/>
+                                            <t t-else="">
+                                                <span>до</span>
+                                                <span t-esc="doc.invoice_date_due"/>
+                                            </t>
+                                            <br/>
+                                            <br/>
+                                        </span>
+                                    </td>
+                                    <td/>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>ВНИМАНИЕ!!!</b>
+                                    </td>
+                                    <td/>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>При получении товара необходимо иметь при себе:</b>
+                                        <br/>
+                                        а) подписанный экземпляр счета-протокола
+                                        <br/>
+                                        б) доверенность
+                                        <br/>
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <br/>
+                        <table width="100%"
+                               style="font-family: courier; font-size: 15px; text-align: center; padding: 10px;">
+                            <tbody>
+                                <tr>
+                                    <td width="40%">Поставщик</td>
+                                    <td width="20%"/>
+                                    <td width="40%">Плательщик</td>
+                                </tr>
+                                <tr>
+                                    <td>____________________</td>
+                                    <td/>
+                                    <td>____________________</td>
+                                </tr>
+                                <tr>
+                                    <td>____________________</td>
+                                    <td/>
+                                    <td>____________________</td>
+                                </tr>
+                                <tr>
+                                    <td>МП</td>
+                                    <td/>
+                                    <td>МП</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <record model="ir.module.category" id="custom_invoice_reports">
+            <field name="name">Invoice reports</field>
+            <field name="description">Invoice reports</field>
+        </record>
+
+        <record model="ir.module.category" id="custom_picking_reports">
+            <field name="name">Picking reports</field>
+            <field name="description">Picking reports</field>
+        </record>
+
+        <!--Groups for reports-->
+        <!--Acceptance report-->
+        <record id="acceptance_report_group" model="res.groups">
+            <field name="name">Acceptance report invoice</field>
+            <field name="category_id" ref="custom_invoice_reports"/>
+        </record>
+        <!--Account protocol-->
+        <record id="account_protocol_inv_group" model="res.groups">
+            <field name="name">Account protocol invoice</field>
+            <field name="category_id" ref="custom_invoice_reports"/>
+        </record>
+
+        <record id="account_protocol_pick_group" model="res.groups">
+            <field name="name">Account protocol picking</field>
+            <field name="category_id" ref="custom_picking_reports"/>
+        </record>
+        <!--Specification-->
+        <record id="specification_inv_group" model="res.groups">
+            <field name="name">Specification invoice</field>
+            <field name="category_id" ref="custom_invoice_reports"/>
+        </record>
+
+        <record id="specification_pick_group" model="res.groups">
+            <field name="name">Specification picking</field>
+            <field name="category_id" ref="custom_picking_reports"/>
+        </record>
+        <!--TTN-->
+        <record id="ttn_vertical_inv_group" model="res.groups">
+            <field name="name">TTN vertical invoice</field>
+            <field name="category_id" ref="custom_invoice_reports"/>
+        </record>
+
+        <record id="ttn_vertical_pick_group" model="res.groups">
+            <field name="name">TTN vertical picking</field>
+            <field name="category_id" ref="custom_picking_reports"/>
+        </record>
+
+        <record id="ttn_horizontal_inv_group" model="res.groups">
+            <field name="name">TTN horizontal invoice</field>
+            <field name="category_id" ref="custom_invoice_reports"/>
+        </record>
+
+        <record id="ttn_horizontal_pick_group" model="res.groups">
+            <field name="name">TTN horizontal picking</field>
+            <field name="category_id" ref="custom_picking_reports"/>
+        </record>
+        <!--TTN with app-->
+        <record id="ttn_app_vertical_inv_group" model="res.groups">
+            <field name="name">TTN with app vertical invoice</field>
+            <field name="category_id" ref="custom_invoice_reports"/>
+        </record>
+
+        <record id="ttn_app_vertical_pick_group" model="res.groups">
+            <field name="name">TTN with app vertical picking</field>
+            <field name="category_id" ref="custom_picking_reports"/>
+        </record>
+
+        <record id="ttn_app_horizontal_inv_group" model="res.groups">
+            <field name="name">TTN with app horizontal invoice</field>
+            <field name="category_id" ref="custom_invoice_reports"/>
+        </record>
+
+        <record id="ttn_app_horizontal_pick_group" model="res.groups">
+            <field name="name">TTN with app horizontal picking</field>
+            <field name="category_id" ref="custom_picking_reports"/>
+        </record>
+        <!--TN-->
+        <record id="tn_vertical_inv_group" model="res.groups">
+            <field name="name">TN vertical invoice</field>
+            <field name="category_id" ref="custom_invoice_reports"/>
+        </record>
+
+        <record id="tn_vertical_pick_group" model="res.groups">
+            <field name="name">TN vertical picking</field>
+            <field name="category_id" ref="custom_picking_reports"/>
+        </record>
+
+        <record id="tn_horizontal_inv_group" model="res.groups">
+            <field name="name">TN horizontal invoice</field>
+            <field name="category_id" ref="custom_invoice_reports"/>
+        </record>
+
+        <record id="tn_horizontal_pick_group" model="res.groups">
+            <field name="name">TN horizontal picking</field>
+            <field name="category_id" ref="custom_picking_reports"/>
+        </record>
+        <!--TN with app-->
+        <record id="tn_app_vertical_inv_group" model="res.groups">
+            <field name="name">TN with app vertical invoice</field>
+            <field name="category_id" ref="custom_invoice_reports"/>
+        </record>
+
+        <record id="tn_app_vertical_pick_group" model="res.groups">
+            <field name="name">TN with app vertical picking</field>
+            <field name="category_id" ref="custom_picking_reports"/>
+        </record>
+
+        <record id="tn_app_horizontal_inv_group" model="res.groups">
+            <field name="name">TN with app horizontal invoice</field>
+            <field name="category_id" ref="custom_invoice_reports"/>
+        </record>
+
+        <record id="tn_app_horizontal_pick_group" model="res.groups">
+            <field name="name">TN with app horizontal picking</field>
+            <field name="category_id" ref="custom_picking_reports"/>
+        </record>
+    </data>
+</odoo>
